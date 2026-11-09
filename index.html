@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f4ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Практика">
+<title>Практика</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+<script>/* тема до отрисовки, чтобы не мигало */try{document.documentElement.dataset.theme=(JSON.parse(localStorage.getItem('practice.v1')||'{}').settings||{}).theme||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<nav id="tabs" class="tabs">
+  <button data-act="tab" data-arg="today">Сегодня</button>
+  <button data-act="tab" data-arg="calendar">Календарь</button>
+  <button data-act="tab" data-arg="settings">Настройки</button>
+</nav>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>

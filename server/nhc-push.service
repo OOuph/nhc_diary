@@ -1,0 +1,20 @@
+[Unit]
+Description=Практика (__HOST__): пуш-уведомления по расписанию
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/nhc-push/push.py
+DynamicUser=yes
+StateDirectory=nhc-push
+Environment=PUSH_HOST=127.0.0.1 PUSH_PORT=8790 PUSH_SUBJECT=https://__HOST__
+Restart=always
+RestartSec=3
+MemoryMax=80M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
