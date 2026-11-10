@@ -7,7 +7,7 @@
 
 // ===== НАСТРОЙКИ И КОНСТАНТЫ =====
 const CONFIG = {
-  APP_VERSION: '2.3',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
+  APP_VERSION: '2.4',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
   STORAGE_KEY: 'practice.v1',          // ключ не меняем: данные v1 читаются как есть
   ACTIVE_KEY: 'practice.active.v1',    // чекпоинт идущей сессии
   LOG_KEY: 'practice.log.v1',
@@ -681,12 +681,15 @@ function rCalendar() {
   let cells = '';
   for (let i = 0; i < lead; i++) cells += '<span class="empty"></span>';
   for (let d = 1; d <= daysIn; d++) {
-    const k = keyOfDate(new Date(y, m, d)), b = sumSec(k, 'base'), p = sumSec(k, 'puto'), g = goalSec(k);
-    // без заливки: только отметки — кружок базовой (полный = цель дня), точка пу-то, буквы привычек или ✓ чистого дня
-    const base = b <= 0 ? '' : `<i class="b${b >= g ? ' full' : ''}"></i>`;
+    const k = keyOfDate(new Date(y, m, d)), b = sumSec(k, 'base'), p = sumSec(k, 'puto');
+    // без заливки: только отметки — точка базовой, точка пу-то, квадрат «дела дня поставлены и все сделаны»,
+    // ниже буквы привычек или ✓ чистого дня
+    const base = b > 0 ? '<i class="b full"></i>' : '';
+    const ts = tasksOf(k), done = getDay(k).evening?.tasksDone;
+    const tasks = ts.length && done && ts.every((_, j) => done[j]) ? '<i class="t"></i>' : '';
     const hab = habitsDone(k) ? (isSober(k) ? '<i class="h clean">✓</i>' : usedHabits(k).map(x => `<i class="h">${x.short}</i>`).join('')) : '';
     cells += `<button class="${k === today ? 'today' : ''} ${k > today ? 'future' : ''}" data-act="day" data-arg="${k}">
-      <span class="n">${d}</span><span class="pr">${base}${p ? '<i class="p"></i>' : ''}</span><span class="hab">${hab}</span></button>`;
+      <span class="n">${d}</span><span class="pr">${base}${p ? '<i class="p"></i>' : ''}${tasks}</span><span class="hab">${hab}</span></button>`;
   }
   const monthName = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(first);
   return `<div class="head"><h1>Календарь</h1></div>
@@ -699,8 +702,8 @@ function rCalendar() {
     <div class="monthnav"><button data-act="month" data-arg="-1" aria-label="Предыдущий месяц">‹</button><h2>${cap(monthName)}</h2><button data-act="month" data-arg="1" aria-label="Следующий месяц">›</button></div>
     <div class="cal">${['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map(w => `<div class="wd">${w}</div>`).join('')}${cells}</div>
     <div class="legend cal-legend">
-      <div>Базовая: <i class="b"></i>меньше цели · <i class="b full"></i>цель дня</div>
-      <div><i class="p"></i> пу-то · <i class="h clean">✓</i>чистый день</div>
+      <div><i class="b full"></i>базовая · <i class="p"></i> пу-то · <i class="t"></i>все дела дня сделаны</div>
+      <div><i class="h clean">✓</i>чистый день</div>
       <div>${CONFIG.HABITS.map(x => `<i class="h">${x.short}</i>`).join('')} — ${CONFIG.HABITS.map(x => x.name.toLowerCase()).join(', ')}</div>
     </div>
   </div>

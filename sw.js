@@ -1,7 +1,7 @@
 // Офлайн-кэш + пуш-уведомления (вибро на заблокированном экране).
 // Кэш: сначала сеть (свежая версия сразу), кэш — если сети нет или она не ответила за NET_TIMEOUT_MS.
 // При правках поднимай CACHE здесь и APP_VERSION в app.js.
-const CACHE = 'practice-v9';
+const CACHE = 'practice-v10';
 const NET_TIMEOUT_MS = 3000;
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 const PUSH_TEXT = {
