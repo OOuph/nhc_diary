@@ -681,10 +681,11 @@ function rCalendar() {
   for (let i = 0; i < lead; i++) cells += '<span class="empty"></span>';
   for (let d = 1; d <= daysIn; d++) {
     const k = keyOfDate(new Date(y, m, d)), b = sumSec(k, 'base'), p = sumSec(k, 'puto'), g = goalSec(k);
-    const lvl = b <= 0 ? '' : b >= g ? 'l4' : b >= g * 0.66 ? 'l3' : b >= g * 0.33 ? 'l2' : 'l1';
-    const hab = habitsDone(k) ? (isSober(k) ? '<i class="h clean"></i>' : usedHabits(k).map(x => `<i class="h">${x.short}</i>`).join('')) : '';
-    cells += `<button class="${lvl} ${k === today ? 'today' : ''} ${k > today ? 'future' : ''}" data-act="day" data-arg="${k}">
-      <span class="hab">${hab}</span><span class="n">${d}</span><span class="pr">${p ? '<i class="p"></i>' : ''}</span></button>`;
+    // без заливки: только отметки — кружок базовой (полный = цель дня), точка пу-то, буквы привычек или ✓ чистого дня
+    const base = b <= 0 ? '' : `<i class="b${b >= g ? ' full' : ''}"></i>`;
+    const hab = habitsDone(k) ? (isSober(k) ? '<i class="h clean">✓</i>' : usedHabits(k).map(x => `<i class="h">${x.short}</i>`).join('')) : '';
+    cells += `<button class="${k === today ? 'today' : ''} ${k > today ? 'future' : ''}" data-act="day" data-arg="${k}">
+      <span class="n">${d}</span><span class="pr">${base}${p ? '<i class="p"></i>' : ''}</span><span class="hab">${hab}</span></button>`;
   }
   const monthName = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(first);
   return `<div class="head"><h1>Календарь</h1></div>
@@ -697,8 +698,8 @@ function rCalendar() {
     <div class="monthnav"><button data-act="month" data-arg="-1" aria-label="Предыдущий месяц">‹</button><h2>${cap(monthName)}</h2><button data-act="month" data-arg="1" aria-label="Следующий месяц">›</button></div>
     <div class="cal">${['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map(w => `<div class="wd">${w}</div>`).join('')}${cells}</div>
     <div class="legend">
-      <span><i class="sw" style="background:var(--l2)"></i>базовая</span><span><i class="sw" style="background:var(--l4)"></i>цель дня</span>
-      <span><i class="p"></i>пу-то</span><span><i class="h clean"></i>чистый день</span>
+      <span><i class="b"></i>базовая</span><span><i class="b full"></i>цель дня</span>
+      <span><i class="p"></i>пу-то</span><span><i class="h clean">✓</i>чистый день</span>
       <span>${CONFIG.HABITS.map(x => `<i class="h">${x.short}</i>`).join('')} ${CONFIG.HABITS.map(x => x.name.toLowerCase()).join(', ')}</span>
     </div>
   </div>

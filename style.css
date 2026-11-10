@@ -2,7 +2,6 @@
   --bg:#f6f4ef; --card:#ffffff; --card2:#efece5; --text:#1f1e1c; --muted:#6b6862;
   --line:rgba(0,0,0,.09); --accent:#3f7566; --accent-bg:#dcebe4; --on-accent:#ffffff;
   --warm:#a8662b; --warm-bg:#f4e6d6; --danger:#b3452f;
-  --l1:#cfe3da; --l2:#9fc8b7; --l3:#6aa894; --l4:#3f7566;
   --radius:14px; --gap:12px;
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
 }
@@ -11,7 +10,6 @@
   --bg:#121413; --card:#1b1e1d; --card2:#232726; --text:#ecebe6; --muted:#9a9890;
   --line:rgba(255,255,255,.09); --accent:#7fb8a6; --accent-bg:#20302a; --on-accent:#0f1a16;
   --warm:#e0a66b; --warm-bg:#33281d; --danger:#e07a63;
-  --l1:#20352d; --l2:#2c5244; --l3:#4b8270; --l4:#7fb8a6;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: dark){
@@ -19,7 +17,6 @@
     --bg:#121413; --card:#1b1e1d; --card2:#232726; --text:#ecebe6; --muted:#9a9890;
     --line:rgba(255,255,255,.09); --accent:#7fb8a6; --accent-bg:#20302a; --on-accent:#0f1a16;
     --warm:#e0a66b; --warm-bg:#33281d; --danger:#e07a63;
-    --l1:#20352d; --l2:#2c5244; --l3:#4b8270; --l4:#7fb8a6;
     color-scheme:dark;
   }
 }
@@ -139,23 +136,22 @@ a{color:var(--accent)}
 .err{color:var(--danger);min-height:18px;margin-top:8px}
 .without{margin:-4px 0 var(--gap)}
 .without b{color:var(--text);font-weight:500}
-/* календарь — как в v1: заливка по доле цели, точка — пу-то; привычки — буквами */
+/* календарь — без заливки: число и отметки (практики сверху, привычки снизу) */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal .wd{font-size:11px;color:var(--muted);text-align:center}
 .cal .empty{visibility:hidden}
-.cal button{aspect-ratio:.86;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--text);font:inherit;padding:3px 0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-width:0}
-.cal button .n{font-size:13px;line-height:1}
-.cal button .hab,.cal button .pr{display:flex;gap:2px;height:9px;align-items:center}
-.cal button.l1{background:var(--l1)} .cal button.l2{background:var(--l2)}
-.cal button.l3{background:var(--l3);color:#fff} .cal button.l4{background:var(--l4);color:var(--on-accent)}
-.cal button.today{outline:2px solid var(--warm);outline-offset:1px}
+.cal button{aspect-ratio:.86;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--text);font:inherit;padding:5px 0 4px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-width:0}
+.cal button .n{font-size:14px;line-height:1}
+.cal button .pr,.cal button .hab{display:flex;gap:3px;height:10px;align-items:center}
+.cal button.today{border:1.5px solid var(--warm)}
+.cal button.today .n{font-weight:700;color:var(--warm)}
 .cal button.future{opacity:.45}
-i.p{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--warm)}
-i.h{font-style:normal;font-size:9px;line-height:9px;font-weight:600;color:var(--warm)}
-i.h.clean{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent)}
-.cal button.l3 i.h,.cal button.l4 i.h{color:inherit}
-.cal button.l3 i.h.clean,.cal button.l4 i.h.clean{background:currentColor}
-.legend i.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+i.b{display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent);box-sizing:border-box}
+i.b.full{background:var(--accent)}
+i.p{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warm)}
+i.h{font-style:normal;font-size:10px;line-height:10px;font-weight:700;color:var(--danger)}
+i.h.clean{color:var(--accent);font-weight:600}
+.legend i.b{vertical-align:-1px}
 .legend i.p,.legend i.h{margin-right:4px}
 input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
 [hidden]{display:none!important}

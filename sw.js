@@ -1,6 +1,6 @@
 // Офлайн-кэш + пуш-уведомления (вибро на заблокированном экране).
 // Кэш: сразу отдаём из кэша, в фоне обновляем — новая версия видна со следующего открытия.
-const CACHE = 'practice-v6';
+const CACHE = 'practice-v7';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 const PUSH_TEXT = {
   walk_end: { title: 'Ходьба окончена', body: 'Садись — сидячая часть' },
