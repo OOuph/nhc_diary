@@ -7,6 +7,7 @@
 
 // ===== НАСТРОЙКИ И КОНСТАНТЫ =====
 const CONFIG = {
+  APP_VERSION: '2.2',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
   STORAGE_KEY: 'practice.v1',          // ключ не меняем: данные v1 читаются как есть
   ACTIVE_KEY: 'practice.active.v1',    // чекпоинт идущей сессии
   LOG_KEY: 'practice.log.v1',
@@ -781,7 +782,7 @@ function rSettings() {
   </div>
   <div class="card"><details><summary>Журнал отладки</summary><pre class="log">${esc(logBuf.slice(-150).join('\n'))}</pre></details>
     <button class="btn ghost danger mt" data-act="wipe">Удалить все данные</button></div>
-  <p class="muted small center">Версия 2 · данные хранятся только на этом телефоне. Экспорт — резервная копия.</p>`;
+  <p class="muted small center">Версия ${CONFIG.APP_VERSION} · данные хранятся только на этом телефоне. Экспорт — резервная копия.</p>`;
 }
 
 // ===== ДЕЙСТВИЯ =====
@@ -958,7 +959,19 @@ document.addEventListener('visibilitychange', () => {
 // ===== СТАРТ =====
 if (active) { advanceIfDue(); if (active && active.kind === 'base' && !active.pausedAt) log('WARNING', 'restored without audio — нужен «Включить звук»'); }
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(() => log('DEBUG', 'sw registered')).catch(e => log('WARNING', 'sw failed', e.message));
+  // Новая версия: сервис-воркер сменился → перезагрузить страницу, если не идёт практика и не открыта форма.
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    const busy = active || ['evening', 'morning', 'log', 'timer', 'gratitude'].includes(view);
+    log('INFO', 'sw controllerchange', { hadController, busy });
+    if (hadController && !busy && !reloaded) { reloaded = true; location.reload(); }
+  });
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    log('DEBUG', 'sw registered');
+    // iOS возвращает приложение из фона без перезагрузки — проверяем обновление при каждом возврате
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+  }).catch(e => log('WARNING', 'sw failed', e.message));
 }
-log('INFO', 'app start', { v: 2, view, standalone: isStandalone(), push: S().pushEnabled });
+log('INFO', 'app start', { v: CONFIG.APP_VERSION, view, standalone: isStandalone(), push: S().pushEnabled });
 render();
