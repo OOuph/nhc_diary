@@ -7,7 +7,7 @@
 
 // ===== НАСТРОЙКИ И КОНСТАНТЫ =====
 const CONFIG = {
-  APP_VERSION: '2.2',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
+  APP_VERSION: '2.3',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
   STORAGE_KEY: 'practice.v1',          // ключ не меняем: данные v1 читаются как есть
   ACTIVE_KEY: 'practice.active.v1',    // чекпоинт идущей сессии
   LOG_KEY: 'practice.log.v1',
@@ -698,10 +698,10 @@ function rCalendar() {
   <div class="card">
     <div class="monthnav"><button data-act="month" data-arg="-1" aria-label="Предыдущий месяц">‹</button><h2>${cap(monthName)}</h2><button data-act="month" data-arg="1" aria-label="Следующий месяц">›</button></div>
     <div class="cal">${['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map(w => `<div class="wd">${w}</div>`).join('')}${cells}</div>
-    <div class="legend">
-      <span><i class="b"></i>базовая</span><span><i class="b full"></i>цель дня</span>
-      <span><i class="p"></i>пу-то</span><span><i class="h clean">✓</i>чистый день</span>
-      <span>${CONFIG.HABITS.map(x => `<i class="h">${x.short}</i>`).join('')} ${CONFIG.HABITS.map(x => x.name.toLowerCase()).join(', ')}</span>
+    <div class="legend cal-legend">
+      <div>Базовая: <i class="b"></i>меньше цели · <i class="b full"></i>цель дня</div>
+      <div><i class="p"></i> пу-то · <i class="h clean">✓</i>чистый день</div>
+      <div>${CONFIG.HABITS.map(x => `<i class="h">${x.short}</i>`).join('')} — ${CONFIG.HABITS.map(x => x.name.toLowerCase()).join(', ')}</div>
     </div>
   </div>
   <div class="tiles">

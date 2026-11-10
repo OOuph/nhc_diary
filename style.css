@@ -151,8 +151,11 @@ i.b.full{background:var(--accent)}
 i.p{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warm)}
 i.h{font-style:normal;font-size:10px;line-height:10px;font-weight:700;color:var(--danger)}
 i.h.clean{color:var(--accent);font-weight:600}
-.legend i.b{vertical-align:-1px}
+.legend i.b{vertical-align:-1px;margin:0 3px 0 2px}
 .legend i.p,.legend i.h{margin-right:4px}
+.cal-legend{display:block;line-height:1.9}
+.cal-legend i.p{margin:0 0 0 3px}
+.cal-legend i.h{margin:0 2px}
 input[type=date]{width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
 [hidden]{display:none!important}
 .scale-l{display:flex;justify-content:space-between;margin-top:4px}
