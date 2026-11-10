@@ -7,7 +7,7 @@
 
 // ===== НАСТРОЙКИ И КОНСТАНТЫ =====
 const CONFIG = {
-  APP_VERSION: '2.4',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
+  APP_VERSION: '2.5',                  // показывается в настройках; поднимать вместе с CACHE в sw.js
   STORAGE_KEY: 'practice.v1',          // ключ не меняем: данные v1 читаются как есть
   ACTIVE_KEY: 'practice.active.v1',    // чекпоинт идущей сессии
   LOG_KEY: 'practice.log.v1',
@@ -682,11 +682,13 @@ function rCalendar() {
   for (let i = 0; i < lead; i++) cells += '<span class="empty"></span>';
   for (let d = 1; d <= daysIn; d++) {
     const k = keyOfDate(new Date(y, m, d)), b = sumSec(k, 'base'), p = sumSec(k, 'puto');
-    // без заливки: только отметки — точка базовой, точка пу-то, квадрат «дела дня поставлены и все сделаны»,
+    // без заливки: только отметки — точка базовой, точка пу-то, квадрат дел дня,
     // ниже буквы привычек или ✓ чистого дня
     const base = b > 0 ? '<i class="b full"></i>' : '';
     const ts = tasksOf(k), done = getDay(k).evening?.tasksDone;
-    const tasks = ts.length && done && ts.every((_, j) => done[j]) ? '<i class="t"></i>' : '';
+    // дела дня: контур — поставлены, ничего не сделано (или итог не заполнен); половинка — часть; полный — все
+    const nDone = ts.filter((_, j) => done?.[j]).length;
+    const tasks = !ts.length ? '' : `<i class="t${nDone === ts.length ? ' full' : nDone ? ' half' : ''}"></i>`;
     const hab = habitsDone(k) ? (isSober(k) ? '<i class="h clean">✓</i>' : usedHabits(k).map(x => `<i class="h">${x.short}</i>`).join('')) : '';
     cells += `<button class="${k === today ? 'today' : ''} ${k > today ? 'future' : ''}" data-act="day" data-arg="${k}">
       <span class="n">${d}</span><span class="pr">${base}${p ? '<i class="p"></i>' : ''}${tasks}</span><span class="hab">${hab}</span></button>`;
@@ -702,8 +704,8 @@ function rCalendar() {
     <div class="monthnav"><button data-act="month" data-arg="-1" aria-label="Предыдущий месяц">‹</button><h2>${cap(monthName)}</h2><button data-act="month" data-arg="1" aria-label="Следующий месяц">›</button></div>
     <div class="cal">${['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map(w => `<div class="wd">${w}</div>`).join('')}${cells}</div>
     <div class="legend cal-legend">
-      <div><i class="b full"></i>базовая · <i class="p"></i> пу-то · <i class="t"></i>все дела дня сделаны</div>
-      <div><i class="h clean">✓</i>чистый день</div>
+      <div><i class="b full"></i>базовая · <i class="p"></i> пу-то · <i class="h clean">✓</i>чистый день</div>
+      <div>Дела дня: <i class="t"></i>ни одного · <i class="t half"></i>часть · <i class="t full"></i>все</div>
       <div>${CONFIG.HABITS.map(x => `<i class="h">${x.short}</i>`).join('')} — ${CONFIG.HABITS.map(x => x.name.toLowerCase()).join(', ')}</div>
     </div>
   </div>
